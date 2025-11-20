@@ -1,0 +1,18 @@
+db.sqlite3
+*.pyc
+__pycache__
+migrations/
+# Enviroments
+.env
+web
+# Archivos sensibles
+SECRET_KEY.txt
+*.key
+*.pem
+*.log
+# IDE
+.vscode/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

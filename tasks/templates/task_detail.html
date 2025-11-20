@@ -1,0 +1,163 @@
+{% extends 'layouts/nav.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task</title>
+</head>
+
+<!-- <body>
+    <h1>Detail <strong style="color:blue">{{task.user.username}}</strong> </h1>
+    {{task.as_p}}
+    <h2>{{task.title}}</h2>
+    {% if task.important %}
+    <h2 style="color:red">{{task.title}}</h2>
+    {% else %}
+    <h2 style="color:blue">{{task.title}}</h2>
+    {% endif %}
+    <p>{{task.description}}</p>
+    <p>Created: {{task.created}}</p>
+    <p>Completed: {{task.dateCompleted}}</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button type="submit">Update</button>
+    </form>
+    <span style="color:red">{{error}}</span>
+
+    <form action="{% url 'complete_task' task.id %}" method="post">
+        {% csrf_token %}
+        <button style="color:green" type="submit">Complete</button>
+    </form>
+    <form action="{% url 'delete_task' task.id %}" method="post">
+        {% csrf_token %}
+        <button style="color:red" type="submit">Delete</button>
+    </form>
+</body> -->
+
+<body class="bg-dark text-light">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Header -->
+                <div class="d-flex align-items-center mb-4">
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary me-3">
+                        <i class="bi bi-arrow-left"></i>
+                    </a>
+                    <h1 class="h2 text-white mb-0">Detalles de Tarea</h1>
+                </div>
+
+                <!-- Task Card -->
+                <div class="card bg-black border-{% if task.important %}warning{% else %}secondary{% endif %} shadow-lg mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start mb-3">
+                            {% if task.important %}
+                            <i class="bi bi-exclamation-triangle-fill text-warning fs-4 me-3"></i>
+                            {% endif %}
+                            <div class="flex-grow-1">
+                                <h2 class="h4 text-{% if task.important %}warning{% else %}white{% endif %} mb-2">
+                                    {{ task.title }}
+                                </h2>
+                                {% if task.description %}
+                                <p class="text-light lead border-start border-{% if task.important %}warning{% else %}secondary{% endif %} ps-3 py-1">
+                                    {{ task.description }}
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Task Metadata -->
+                        <div class="row g-3 mt-3">
+                            <div class="col-md-6">
+                                <span class="badge bg-dark text-light border border-secondary w-100 py-2">
+                                    <i class="bi bi-calendar-plus me-2"></i>Creada: {{ task.created }}
+                                </span>
+                            </div>
+                            {% if task.dateCompleted %}
+                            <div class="col-md-6">
+                                <span class="badge bg-success text-dark w-100 py-2">
+                                    <i class="bi bi-calendar-check me-2"></i>Completada: {{ task.dateCompleted }}
+                                </span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Update Form -->
+                <div class="card bg-black border-secondary shadow mb-4">
+                    <div class="card-body">
+                        <h3 class="h5 text-white mb-3">Actualizar Tarea</h3>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                {% for field in form %}
+                                <div class="col-12">
+                                    <label class="form-label text-light small">{{ field.label }}</label>
+                                    {{ field }}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% if error %}
+                            <div class="alert alert-danger mt-3">{{ error }}</div>
+                            {% endif %}
+                            <button type="submit" class="btn btn-purple mt-3">
+                                <i class="bi bi-check-lg me-2"></i>Actualizar
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 flex-wrap">
+                    {% if not task.dateCompleted %}
+                    <form action="{% url 'complete_task' task.id %}" method="post" class="flex-fill">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle me-2"></i>Completar
+                        </button>
+                    </form>
+                    {% endif %}
+                    
+                    <form action="{% url 'delete_task' task.id %}" method="post" class="flex-fill">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger w-100">
+                            <i class="bi bi-trash me-2"></i>Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .btn-purple { 
+            background-color: #6f42c1; 
+            border-color: #6f42c1; 
+            color: white; 
+        }
+        .btn-purple:hover { 
+            background-color: #5a32a3; 
+            border-color: #5a32a3; 
+        }
+        .form-control, .form-select {
+            background-color: #1a1a1a;
+            border-color: #444;
+            color: white;
+        }
+        .form-control:focus, .form-select:focus {
+            background-color: #1a1a1a;
+            border-color: #6f42c1;
+            color: white;
+            box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.25);
+        }
+    </style>
+</body>
+
+</html>
+{% endblock %}

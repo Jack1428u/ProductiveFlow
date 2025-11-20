@@ -1,0 +1,55 @@
+{% extends 'layouts/nav.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks Completed</title>
+</head>
+
+<body class="bg-dark text-light">
+    <div class="container py-4">
+        <h1 class="h2 mb-4 text-white border-bottom border-success pb-2">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>Tareas Completadas
+        </h1>
+
+        <div class="row g-3">
+            {% for task in tasks %}
+            <div class="col-12">
+                <div class="card bg-black border-success shadow-sm opacity-75">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <i class="bi bi-check-circle-fill text-success mt-1 me-3 fs-5"></i>
+                            <div class="flex-grow-1">
+                                <h5 class="card-title text-success text-decoration-line-through mb-2">
+                                    {{ task.title }}
+                                </h5>
+
+                                {% if task.description %}
+                                <p class="card-text text-light mb-2 small text-decoration-line-through">{{
+                                    task.description }}</p>
+                                {% endif %}
+
+                                <div class="d-flex flex-wrap gap-3 mt-3">
+                                    <span class="badge bg-dark text-light border border-secondary small">
+                                        <i class="bi bi-calendar-plus me-1"></i>Creada: {{ task.created }}
+                                    </span>
+                                    <span class="badge bg-success text-dark small">
+                                        <i class="bi bi-calendar-check me-1"></i>Completada: {{ task.dateCompleted }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}
