@@ -20,12 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-o=&(6s!uec5(+bl0cka&)-++^bfh5u+p=!9ncg&x5k@&#7ni^y'
-SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = []
@@ -53,7 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', 
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'djangocrud.urls'
@@ -79,19 +75,14 @@ WSGI_APPLICATION = 'djangocrud.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
-        conn_max_age=600
+        default=os.environ.get('DATABASE_URL'),  # ← Esto usa la URL de Render
+        conn_max_age=600,
+        conn_health_checks=True,
     )
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -115,13 +106,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us' # Idioma de la aplicación
+LANGUAGE_CODE = 'en-us'  # Idioma de la aplicación
 
-TIME_ZONE = 'America/Lima' # Zona horaria base (Universal Time Coordinate)
+TIME_ZONE = 'America/Lima'  # Zona horaria base (Universal Time Coordinate)
 
-USE_I18N = True # Habilita traduccion multi-idioma
+USE_I18N = True  # Habilita traduccion multi-idioma
 
-USE_TZ = True # Habilita timezone-aware para fechas/horas
+USE_TZ = True  # Habilita timezone-aware para fechas/horas
 
 
 # Static files (CSS, JavaScript, Images)
@@ -138,7 +129,7 @@ if not DEBUG:
     # and renames the files with unique names for each version to support long-term caching
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-LOGIN_URL = '/signin' # Login url por defecto
+LOGIN_URL = '/signin'  # Login url por defecto
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
